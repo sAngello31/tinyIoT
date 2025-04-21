@@ -1,22 +1,21 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <getopt.h>
-#include <stdbool.h>
 #include <string.h>
-
-bool tflag = false; // Temperature
-bool hflag = false; // Humidity
+#include <unistd.h>
+#include <time.h>
+#include "utils.h"
 
 void print_help(){
     printf("Publisher TinyIoT\n");
-    printf("\tHelp Command: [-h]\n");
-    printf("\tActivate Temperature Sensor: [-T]\n");
-    printf("\tActivate Humidity Sensor: [-H]\n");
+    printf("This program has the goal of simulating two sensors working concurrently.\n");
+    printf("Currently, there are only two sensors working. [Temperature (Celsius) and Humidity (Percent)]\n");
     printf("\n");
 }
 
 int main(int argc, char **argv){
     int opt;
-    // Try to change later
+    
     while ((opt = getopt(argc, argv, "h")) != -1)
     {  
         switch (opt)
@@ -24,19 +23,20 @@ int main(int argc, char **argv){
         case 'h':
             print_help();
             return 0;
-        case 'T':
-            tflag = true;
-            break;
-        case 'H':
-            hflag = true;
-            break;
         case '?':
         default:
-            fprintf(stderr, "use: %s [-T] [-H] [arg 1] [arg 2] ... [arg n]\n", argv[0]);
+            fprintf(stderr, "use: %s [-h] to find help\n", argv[0]);
             return -1;
         }
     }
-    
 
+    srand(time(NULL));
+    
+    while(1){
+        float generated_value = generate_rand_number(15.0, 30.0);
+        printf("\tValue: %f\n", generated_value);
+        sleep(1);
+        
+    }
     return 0;
 }

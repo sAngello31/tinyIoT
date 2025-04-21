@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
-#include <string.h>
 #include <unistd.h>
 #include <time.h>
+#include <string.h>
 #include "utils.h"
+#include "sensor.h"
 
 void print_help(){
     printf("Publisher TinyIoT\n");
@@ -14,6 +15,8 @@ void print_help(){
 }
 
 int main(int argc, char **argv){
+    sensor temperature_sensor;
+    sensor humidity_sensor;
     int opt;
     
     while ((opt = getopt(argc, argv, "h")) != -1)
@@ -31,12 +34,16 @@ int main(int argc, char **argv){
     }
 
     srand(time(NULL));
-    
+    strcpy(temperature_sensor.name, "Temperature");
+    strcpy(humidity_sensor.name, "Humidity");
     while(1){
         float generated_value = generate_rand_number(15.0, 30.0);
-        printf("\tValue: %f\n", generated_value);
+        temperature_sensor.data_value = generated_value;
+        send_data(&temperature_sensor);
         sleep(1);
-        
     }
+
+    free(&temperature_sensor);
+    free(&humidity_sensor);
     return 0;
 }

@@ -13,8 +13,6 @@ typedef struct {
 } sensor;
 #pragma pack()
 
-// Void for now
-// This function will send the data to the gateway
 void send_data(sensor* sensor_data);
 void init_sensors(sensor sensors_array[]);
 void* start_simulation(void*  arg);

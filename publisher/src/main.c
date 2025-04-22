@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
-#include <unistd.h>
 #include <time.h>
 #include <string.h>
+#include <pthread.h>
+
 #include "utils.h"
 #include "sensor.h"
 
@@ -15,10 +16,10 @@ void print_help(){
 }
 
 int main(int argc, char **argv){
-    sensor temperature_sensor;
-    sensor humidity_sensor;
+    sensor sensors_array[NUM_SENSORS];
+    pthread_t data_thread;
     int opt;
-    
+
     while ((opt = getopt(argc, argv, "h")) != -1)
     {  
         switch (opt)
@@ -32,18 +33,9 @@ int main(int argc, char **argv){
             return -1;
         }
     }
-
     srand(time(NULL));
-    strcpy(temperature_sensor.name, "Temperature");
-    strcpy(humidity_sensor.name, "Humidity");
-    while(1){
-        float generated_value = generate_rand_number(15.0, 30.0);
-        temperature_sensor.data_value = generated_value;
-        send_data(&temperature_sensor);
-        sleep(1);
-    }
+    init_sensors(sensors_array);
+    start_simulation(&sensors_array[0]);
 
-    free(&temperature_sensor);
-    free(&humidity_sensor);
     return 0;
 }

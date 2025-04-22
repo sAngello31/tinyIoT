@@ -2,12 +2,13 @@
 
 CC = gcc
 SRC = src
-CFLAGS = -Wall -c -Iinclude
+THREAD = -pthread
+CFLAGS = -Wall -c -Iinclude $(THREAD)
 OBJ = main.o utils.o sensor.o
 TARGET = publisher
 
 $(TARGET): $(OBJ)
-	$(CC) $(OBJ) -o $(TARGET)
+	$(CC) $(OBJ) -o $(TARGET) $(THREAD)
 
 main.o: $(SRC)/main.c include/utils.h include/sensor.h
 	$(CC) $(CFLAGS) $(SRC)/main.c -o main.o

@@ -17,7 +17,7 @@ void print_help(){
 
 int main(int argc, char **argv){
     sensor sensors_array[NUM_SENSORS];
-    pthread_t data_thread;
+    pthread_t thread_temperature, thread_humidity;
     int opt;
 
     while ((opt = getopt(argc, argv, "h")) != -1)
@@ -33,9 +33,20 @@ int main(int argc, char **argv){
             return -1;
         }
     }
+
     srand(time(NULL));
     init_sensors(sensors_array);
-    start_simulation(&sensors_array[0]);
+    int result = pthread_create(&thread_temperature, NULL, start_simulation, &sensors_array[0]);
+    if(result != 0){
+        printf("Error in creating the temperature thread: %s\n", strerror(result));
+    }
+    result = pthread_create(&thread_humidity, NULL, start_simulation, &sensors_array[1]);
+    if(result != 0){
+        printf("Error in creating the humidity thread: %s\n", strerror(result));
+    }
+
+    pthread_join(thread_temperature, NULL);
+    pthread_join(thread_humidity,NULL);
 
     return 0;
 }

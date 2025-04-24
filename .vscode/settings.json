@@ -5,6 +5,11 @@
         "string.h": "c",
         "unistd.h": "c",
         "stdlib.h": "c",
-        "socket.h": "c"
-    }
+        "socket.h": "c",
+        "netdb.h": "c",
+    },
+    "C_Cpp.intelliSenseEngine": "Tag Parser",
+    "C_Cpp.errorSquiggles": "enabled",
+
+    // Tag Parser
 }

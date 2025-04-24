@@ -4,13 +4,15 @@
             "name": "Linux",
             "includePath": [
                 "/usr/include",
+                "/usr/include/linux",
                 "/usr/include/x86_64-linux-gnu",
                 "${workspaceFolder}/**"
             ],
             "compilerPath": "/usr/bin/gcc",
             "defines": [],
             "intelliSenseMode": "linux-gcc-x64",
-            "cStandard": "c11"
+            "cStandard": "c17",
+            "cppStandard": "gnu++23"
         }
     ],
     "version": 4

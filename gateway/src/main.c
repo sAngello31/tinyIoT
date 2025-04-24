@@ -13,9 +13,15 @@ void print_help(){
 }
 
 int main(int argc, char **argv){
-    int opt;
-    int port = DEFAULT_PORT;
-    
+    int opt, listenfd, connfd;
+    char *port = DEFAULT_PORT;
+
+    unsigned int clientlen;
+    // address and connections
+    struct sockaddr_in clientaddr;
+    struct hostent *hp;
+    char *haddrp; // client ip in string format
+
     while ((opt = getopt(argc, argv, "hp")) != -1){
         switch (opt)
         {
@@ -23,11 +29,12 @@ int main(int argc, char **argv){
             print_help();
             return 0;
         case 'p':
-            port = atoi(argv[2]);
-            if(port <= 0 || port > USHRT_MAX){
+            int port_n = atoi(argv[2]);
+            if(port_n <= 0 || port_n > USHRT_MAX){
                 fprintf(stderr, "Invalid %s port, to set a custom port enter a number between 1 and %d\n",argv[2], USHRT_MAX);
                 return -1;
-            }
+            }else
+                port = argv[2];
             break;
         default:
             fprintf(stderr, "use: %s -p <port> (to change the default port)\n", argv[0]);
@@ -35,9 +42,23 @@ int main(int argc, char **argv){
             return -1;
         }
     }
-    
 
-    printf("Starting Gateway Server...\n");
-    printf("Listening in the port [%i]\n", port);
+    listenfd = open_listenfd(port);
+    if (listenfd < 0) {
+        return error_connection(listenfd);
+    }
+
+    printf("Gateway Server listening in the port [%s]\n", port);
+
+    while(1){
+        clientlen = sizeof(clientaddr);
+        connfd = accept(listenfd, (struct sockaddr *)&clientaddr, &clientlen);
+        hp = gethostbyaddr((const char *)&clientaddr.sin_addr.s_addr, sizeof(clientaddr.sin_addr.s_addr), AF_INET);
+        haddrp = inet_ntoa(clientaddr.sin_addr);
+        printf("Server connected to: %s (%s)\n", hp->h_name, haddrp);
+        printf("Processing request...\n");
+        
+        close(connfd);
+    }
     return 0;
 }

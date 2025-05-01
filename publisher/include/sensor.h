@@ -1,6 +1,14 @@
 #ifndef SENSOR_H
 #define SENSOR_H
 
+#include <stdio.h>
+#include <time.h>
+#include <string.h>
+#include <unistd.h>
+#include "utils.h"
+
+#include "socket.h"
+
 #define SENSOR_TEMPERATURE "Temperature"
 #define SENSOR_HUMIDITY "Humidity"
 #define NUM_SENSORS 2
@@ -13,7 +21,6 @@ typedef struct {
 } sensor;
 #pragma pack()
 
-void send_data(sensor* sensor_data);
 void init_sensors(sensor sensors_array[]);
 void* start_simulation(void*  arg);
 

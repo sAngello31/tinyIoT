@@ -1,14 +1,4 @@
-#include <stdio.h>
-#include <time.h>
-#include <string.h>
-#include <unistd.h>
-#include "utils.h"
 #include "sensor.h"
-
-void send_data(sensor* sensor_data){
-    printf("%s sensor is connected to gateway socket\n", sensor_data->name);
-    printf("%s sensor sending %f...\n", sensor_data->name ,sensor_data->data_value);
-}
 
 // Change de init
 void init_sensors(sensor sensors_array[]){

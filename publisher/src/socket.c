@@ -23,13 +23,13 @@ int open_clientfd(char* hostname, char* port){
     }
     return clientfd;
 }
-
+/*
 int send_data(sensor* data){
     printf("%s sensor is connected to gateway socket\n", sensor_data->name);
     printf("%s sensor sending %f...\n", sensor_data->name ,sensor_data->data_value);
     return 0;
 }
-
+*/
 int error_connection(int connfd){
     fprintf(stderr, "Connection error: %s\n", strerror(connfd));
     close(connfd);
